@@ -1,57 +1,76 @@
-# Eventbridge Gate ⭐
+# EventBridge Gate
 
-A CLI tool for monitoring and debugging AWS Eventbridge events.
+[![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](LICENSE)
+[![Release](https://img.shields.io/github/v/release/aka-somix/eventbridge-gate)](https://github.com/aka-somix/eventbridge-gate/releases)
 
+> Real-time AWS EventBridge event debugger for developers.
 
-## Introduction
-### The Problem
-Developing event-driven systems on AWS is exciting, but misconfiguration may happen and debugging interactions between components is not always as easy as one would wish.
-Sometimes you want to react to a given event but you are unsure of how exactly it is structured. Other times you are building events from the ground up and want to be sure that
-the events you are emitting are correct, while also make sure to create correct event patterns for catching said events with a rule.
+`egate` hooks a temporary sniffer onto any EventBridge bus and streams every event to your terminal in real-time. When you're done, it tears everything down cleanly — no orphaned AWS resources.
 
-### The Solution
-**Eventbridge Gate** is a simple tool that allows you to hook up your event bus with a sniffer and monitor all the events passing through, so you can look at their structure and easily debug your system.
+---
 
-This tool will allow you to setup (and tear down) monitors on any bus in your AWS account, that will sniff any event passing through and make it available for you to watch in realtime.
+## Install
 
-This tool is based on an existing reference architecture described on this [ServerlessLand Page]()
-
-
-## Usage
-
-### 🚨 READ THIS BEFORE CONTINUING 🚨
-This tool will require to create resources in your AWS account. 
-This basically means two things:
-* The AWS credentials you provide must have enough permissions for creating and destroying the needed resources
-* There will be (minimal, possibly 0) **costs** associated to the usage of this tool, which are directly related to the amount of events passing through the monitors
-
-
-### Install with [Homebrew](brew.sh)
-
-To install the tool you can use Homebrew with both linux-based or macOs operating systems.
-```
+```bash
 brew tap aka-somix/eventbridge-gate
 brew install egate
 ```
 
-### Expor
+Or build from source (requires Go 1.23+):
 
-### Set up your first monitor
-TBD
+```bash
+git clone https://github.com/aka-somix/eventbridge-gate.git
+cd eventbridge-gate && make dev-build
+```
 
-### List active monitors
-TBD
+---
 
-### Watch logs of existing monitor
-TBD
+## Quick Start
 
-### Remove monitor
-TBD
+```bash
+# Optional: pick an AWS profile for this session
+egate profile set
 
+# Attach a monitor to your bus
+egate bus monitor set my-event-bus
 
+# Stream events live — press q to stop
+egate bus monitor tail my-event-bus
 
-## Contribution
+# Clean up all AWS resources
+egate bus monitor unset my-event-bus
+```
 
-TBD
+---
 
-## Costs associated
+## Commands
+
+| Command | Description |
+|---|---|
+| `egate bus list` | List all EventBridge buses |
+| `egate bus monitor set <bus>` | Attach a sniffer to a bus |
+| `egate bus monitor list` | Show buses with active monitors |
+| `egate bus monitor tail <bus>` | Stream events live (press `q` to stop) |
+| `egate bus monitor unset <bus>` | Remove the sniffer and its AWS resources |
+| `egate profile set` | Interactively select an AWS CLI profile |
+
+---
+
+## Documentation
+
+Full docs are available on **[GitHub Pages](https://aka-somix.github.io/eventbridge-gate)**:
+
+- [User Manual](https://aka-somix.github.io/eventbridge-gate/manual) — prerequisites, permissions, all commands, troubleshooting
+- [Contributing Guide](https://aka-somix.github.io/eventbridge-gate/contributing) — dev setup, architecture, PR guidelines, release process
+
+---
+
+## Contributing
+
+Bug reports, feature requests, and pull requests are welcome. See the [Contributing Guide](https://aka-somix.github.io/eventbridge-gate/contributing) for how to get started.
+
+---
+
+## License
+
+Apache 2.0 — see [LICENSE](LICENSE).
