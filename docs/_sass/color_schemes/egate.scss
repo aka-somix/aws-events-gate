@@ -1,0 +1,37 @@
+// egate — Custom dark purple color scheme for just-the-docs
+// Palette:
+//   Page bg:    #0f0e17  (deep dark, faint purple tint)
+//   Sidebar:    #16162a  (slightly more purple)
+//   Surface:    #1e1e36  (code / table backgrounds)
+//   Border:     #2a2a45
+//   Body text:  #d4d0ea  (lavender-tinted white)
+//   Headings:   #ffffff
+//   Link:       #c084fc  (light purple)
+//   Accent:     #7c3aed  (strong purple — buttons, active)
+//   Nav child:  #8b5cf6  (soft violet)
+
+$color-scheme: dark;
+
+// --- Backgrounds ---
+$body-background-color: #0f0e17;
+$sidebar-color:         #16162a;
+$code-background-color: #1e1e36;
+$table-background-color: #1e1e36;
+$search-background-color: #1e1e36;
+$feedback-color:        #16162a;
+
+// --- Text ---
+$body-text-color:            #d4d0ea;
+$body-heading-color:         #ffffff;
+$search-result-preview-color: #a09ec0;
+$code-linenumber-color:      #a09ec0;
+
+// --- Interactive ---
+$link-color:          #c084fc;
+$nav-child-link-color: #8b5cf6;
+$base-button-color:   #2a2a45;
+$btn-primary-color:   #7c3aed;
+$border-color:        #2a2a45;
+
+// Dark syntax highlighting
+@import "./vendor/accessible-pygments/github-dark";

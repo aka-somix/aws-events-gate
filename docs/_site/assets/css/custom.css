@@ -1,0 +1,292 @@
+/* ============================================================
+   EventBridge Gate — Custom design layer
+   Dark purple theme · Inter body · JetBrains Mono code
+   ============================================================ */
+
+/* ── Smooth scrolling ── */
+html {
+  scroll-behavior: smooth;
+}
+
+/* ── Fonts ── */
+body,
+.site-nav,
+.site-footer,
+.main-content,
+.search-input,
+.search-results {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  font-size: 15px;
+  line-height: 1.75;
+  -webkit-font-smoothing: antialiased;
+}
+
+code,
+pre,
+.highlight,
+kbd,
+samp {
+  font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', monospace;
+  font-size: 0.875em;
+  font-variant-ligatures: common-ligatures;
+}
+
+/* ── Headings ── */
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Inter', sans-serif;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.3;
+}
+
+h1 { font-size: 2rem; margin-top: 0; }
+h2 { font-size: 1.5rem; margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid #2a2a45; }
+h3 { font-size: 1.15rem; margin-top: 1.5rem; }
+
+/* ── Custom scrollbar (WebKit) ── */
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: #0f0e17; }
+::-webkit-scrollbar-thumb { background: #7c3aed; border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: #9b5de5; }
+
+/* ============================================================
+   SIDEBAR
+   ============================================================ */
+
+.side-bar {
+  background: linear-gradient(180deg, #1a1930 0%, #0f0e17 100%);
+  border-right: 1px solid #2a2a45;
+}
+
+/* Site title / logo */
+.site-title {
+  font-family: 'Inter', sans-serif;
+  font-weight: 700;
+  font-size: 1rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  background: linear-gradient(135deg, #c084fc 0%, #7c3aed 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  padding: 1.25rem 1.5rem;
+}
+
+/* Nav section labels */
+.nav-list-expander,
+.nav-category {
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #5a5880;
+  font-weight: 600;
+}
+
+/* Nav links */
+.nav-list .nav-list-item .nav-list-link {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #a09ec0;
+  border-radius: 6px;
+  padding: 0.45rem 1rem;
+  margin: 1px 0.5rem;
+  transition: background 0.15s ease, color 0.15s ease;
+  border-left: 3px solid transparent;
+}
+
+.nav-list .nav-list-item .nav-list-link:hover {
+  background: rgba(124, 58, 237, 0.12);
+  color: #e9d5ff;
+  border-left-color: #7c3aed;
+}
+
+/* Active nav link */
+.nav-list .nav-list-item .nav-list-link.active {
+  background: rgba(124, 58, 237, 0.2);
+  color: #e9d5ff;
+  border-left: 3px solid #9b5de5;
+  font-weight: 600;
+}
+
+/* Child nav links */
+.nav-list .nav-list .nav-list-item .nav-list-link {
+  font-size: 0.825rem;
+  color: #8b5cf6;
+  padding-left: 1.5rem;
+}
+
+.nav-list .nav-list .nav-list-item .nav-list-link:hover {
+  color: #c084fc;
+}
+
+/* ============================================================
+   MAIN CONTENT
+   ============================================================ */
+
+.main-content {
+  max-width: 860px;
+}
+
+/* ── Links ── */
+.main-content a {
+  color: #c084fc;
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: color 0.15s ease, border-color 0.15s ease;
+}
+
+.main-content a:hover {
+  color: #e9d5ff;
+  border-bottom-color: #c084fc;
+}
+
+/* ── Code blocks ── */
+.highlight,
+pre.highlight {
+  border-left: 3px solid #7c3aed;
+  border-radius: 0 6px 6px 0;
+  padding: 1.2rem 1.4rem;
+  margin: 1.5rem 0;
+  overflow-x: auto;
+}
+
+/* Inline code */
+p code,
+li code,
+td code {
+  background: #1e1e36;
+  color: #c084fc;
+  border: 1px solid #2a2a45;
+  border-radius: 4px;
+  padding: 0.15em 0.4em;
+  font-size: 0.875em;
+}
+
+/* ── Tables ── */
+table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 1.5rem 0;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+table thead {
+  background: #1e1e36;
+}
+
+table thead th {
+  color: #c084fc;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 0.75rem 1rem;
+  border-bottom: 2px solid #7c3aed;
+  text-align: left;
+}
+
+table tbody tr:nth-child(odd) {
+  background: rgba(30, 30, 54, 0.6);
+}
+
+table tbody tr:nth-child(even) {
+  background: rgba(22, 22, 42, 0.4);
+}
+
+table tbody tr:hover {
+  background: rgba(124, 58, 237, 0.1);
+}
+
+table td {
+  padding: 0.65rem 1rem;
+  border-bottom: 1px solid #2a2a45;
+  vertical-align: top;
+}
+
+/* ── Callout blocks (just-the-docs) ── */
+.note-title,
+.warning-title,
+.tip-title {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* ── Buttons ── */
+.btn {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.875rem;
+  font-weight: 600;
+  border-radius: 6px;
+  transition: background 0.15s ease, transform 0.1s ease, box-shadow 0.15s ease;
+}
+
+.btn-primary {
+  background: #7c3aed;
+  color: #fff !important;
+  border: none;
+  box-shadow: 0 0 0 0 rgba(124, 58, 237, 0);
+}
+
+.btn-primary:hover {
+  background: #9b5de5;
+  box-shadow: 0 0 16px rgba(124, 58, 237, 0.4);
+  transform: translateY(-1px);
+}
+
+/* ── Search input ── */
+.search-input {
+  font-family: 'Inter', sans-serif;
+  background: #1e1e36;
+  border: 1px solid #2a2a45;
+  border-radius: 6px;
+  color: #d4d0ea;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.search-input:focus {
+  border-color: #7c3aed;
+  box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.2);
+  outline: none;
+}
+
+/* ── Details / summary (collapsible ToC) ── */
+summary {
+  font-weight: 600;
+  color: #c084fc;
+  cursor: pointer;
+  font-size: 0.875rem;
+  letter-spacing: 0.04em;
+}
+
+/* ── Horizontal rule ── */
+hr {
+  border: none;
+  border-top: 1px solid #2a2a45;
+  margin: 2rem 0;
+}
+
+/* ── Blockquotes ── */
+blockquote {
+  border-left: 3px solid #7c3aed;
+  background: rgba(30, 30, 54, 0.5);
+  padding: 0.75rem 1.25rem;
+  border-radius: 0 6px 6px 0;
+  margin: 1.5rem 0;
+  color: #a09ec0;
+  font-style: italic;
+}
+
+/* ── Site footer ── */
+.site-footer {
+  font-size: 0.8rem;
+  color: #5a5880;
+  border-top: 1px solid #2a2a45;
+}
+
+.site-footer a {
+  color: #8b5cf6;
+}

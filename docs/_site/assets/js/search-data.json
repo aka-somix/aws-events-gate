@@ -1,0 +1,156 @@
+{"0": {
+    "doc": "Contributing",
+    "title": "Contributing to EventBridge Gate",
+    "content": "Contents . | Development Setup . | Prerequisites | Clone and Build | GoReleaser (release builds) | . | Architecture Overview . | Key Design Patterns | . | Adding a New Command . | 1. Create the command file | 2. Register with the parent command | 3. Add business logic to pkg/services | 4. Update package docs | . | Pull Request Guidelines | Release Process . | Steps | Local release test (dry-run) | . | Reporting Issues | . ",
+    "url": "/eventbridge-gate/contributing.html#contributing-to-eventbridge-gate",
+    
+    "relUrl": "/contributing.html#contributing-to-eventbridge-gate"
+  },"1": {
+    "doc": "Contributing",
+    "title": "Development Setup",
+    "content": "Prerequisites . | Go 1.23+ | AWS CLI v2 configured with valid credentials | golangci-lint for linting | . Clone and Build . git clone https://github.com/aka-somix/eventbridge-gate.git cd eventbridge-gate # Build the binary (outputs: ./egate) make dev-build # Run tests go test ./... # Lint golangci-lint run . GoReleaser (release builds) . # Requires goreleaser installed make release . ",
+    "url": "/eventbridge-gate/contributing.html#development-setup",
+    
+    "relUrl": "/contributing.html#development-setup"
+  },"2": {
+    "doc": "Contributing",
+    "title": "Architecture Overview",
+    "content": "eventbridge-gate/ ├── main.go # Entry point — calls cmd.Execute() ├── cmd/ # Cobra CLI command definitions (no AWS logic here) │ ├── root.go # Root command; wires bus + profile subcommands │ ├── bus/ │ │ ├── list.go # egate bus list │ │ └── monitor/ │ │ ├── set.go # egate bus monitor set &lt;bus&gt; │ │ ├── unset.go # egate bus monitor unset &lt;bus&gt; │ │ ├── list.go # egate bus monitor list │ │ └── tail.go # egate bus monitor tail &lt;bus&gt; │ └── profile/ │ └── set.go # egate profile set (interactive promptui) ├── pkg/services/ # All AWS API calls and business logic │ ├── config.go # MonitorConfig — resource naming constants │ ├── eventBus.go # EventBusService (list buses) │ └── monitor.go # MonitorService (create/destroy/list/tail) └── internal/ ├── store/ # In-memory ProfileStore singleton └── aws/ # AWS CLI exec wrapper (currently unused) . Key Design Patterns . | Cobra commands are package-level variables, initialized at package init time. | Services (pkg/services) hold all AWS SDK v2 client state and are constructed once per command run. | ProfileStore is a singleton shared across all commands in a session (in-memory only). | Resource naming is centralized in MonitorConfig (see pkg/services/config.go). | . ",
+    "url": "/eventbridge-gate/contributing.html#architecture-overview",
+    
+    "relUrl": "/contributing.html#architecture-overview"
+  },"3": {
+    "doc": "Contributing",
+    "title": "Adding a New Command",
+    "content": "Follow this pattern for any new subcommand: . 1. Create the command file . Add a new file in the appropriate cmd/ subdirectory: . // cmd/bus/describe.go package bus import ( \"fmt\" \"github.com/spf13/cobra\" ) var describeCmd = &amp;cobra.Command{ Use: \"describe &lt;busname&gt;\", Short: \"Describe an EventBridge bus\", Args: cobra.ExactArgs(1), Run: func(cmd *cobra.Command, args []string) { busName := args[0] // Call service here fmt.Println(busName) }, } . 2. Register with the parent command . In cmd/bus/root.go, add to the init() function: . func init() { BusCmd.AddCommand(describeCmd) } . 3. Add business logic to pkg/services . If the command needs AWS API calls, add a method to the relevant service in pkg/services/. Keep all AWS SDK usage there — commands stay thin. 4. Update package docs . Add a one-line summary of the new command to cmd/bus/doc.go. ",
+    "url": "/eventbridge-gate/contributing.html#adding-a-new-command",
+    
+    "relUrl": "/contributing.html#adding-a-new-command"
+  },"4": {
+    "doc": "Contributing",
+    "title": "Pull Request Guidelines",
+    "content": ". | One feature or fix per PR — keeps review focused and history clean | Run tests and lint before opening a PR: go test ./... golangci-lint run . | Use conventional commits (the repo’s GoReleaser changelog is auto-generated from them): . | feat: new feature | fix: bug fix | docs: documentation only | refactor: no behavior change | chore: maintenance (deps, build, CI) | . | No breaking changes without discussion — open an issue first for anything that changes CLI flags or command behavior | . ",
+    "url": "/eventbridge-gate/contributing.html#pull-request-guidelines",
+    
+    "relUrl": "/contributing.html#pull-request-guidelines"
+  },"5": {
+    "doc": "Contributing",
+    "title": "Release Process",
+    "content": "Releases are fully automated via GoReleaser and published to the Homebrew tap aka-somix/homebrew-eventbridge-gate. Steps . | Bump the version in VERSION | Tag the commit: git tag -a v0.x.y -m \"Release v0.x.y\" git push origin v0.x.y . | GoReleaser runs in CI and publishes: . | GitHub Release with binaries (Linux, macOS, Windows) | Homebrew formula update in the tap repo | . | . Local release test (dry-run) . goreleaser release --snapshot --clean . ",
+    "url": "/eventbridge-gate/contributing.html#release-process",
+    
+    "relUrl": "/contributing.html#release-process"
+  },"6": {
+    "doc": "Contributing",
+    "title": "Reporting Issues",
+    "content": "Open an issue on GitHub with: . | egate version (egate --version) | AWS region and service involved | Command run and full error output | . ",
+    "url": "/eventbridge-gate/contributing.html#reporting-issues",
+    
+    "relUrl": "/contributing.html#reporting-issues"
+  },"7": {
+    "doc": "Contributing",
+    "title": "Contributing",
+    "content": " ",
+    "url": "/eventbridge-gate/contributing.html",
+    
+    "relUrl": "/contributing.html"
+  },"8": {
+    "doc": "Home",
+    "title": "EventBridge Gate",
+    "content": "Real-time AWS EventBridge event debugger for developers. Debugging event-driven systems on AWS is hard. When an EventBridge rule isn’t firing, or you’re unsure how an event is structured, you need to see what’s actually flowing through your bus — right now, not after digging through CloudWatch queries. egate hooks a temporary sniffer onto any EventBridge bus in your account and streams every event to your terminal in real-time. When you’re done, it tears everything down cleanly. ",
+    "url": "/eventbridge-gate/#eventbridge-gate",
+    
+    "relUrl": "/#eventbridge-gate"
+  },"9": {
+    "doc": "Home",
+    "title": "Key Features",
+    "content": ". | Real-time event streaming via CloudWatch Live Tail — see events as they happen | Zero-configuration sniffers — one command creates the CloudWatch log group, resource policy, and EventBridge rule | Clean teardown — unset destroys all AWS resources, leaving no orphans | Multi-bus support — monitor multiple buses independently | AWS profile support — interactive profile selector for multi-account workflows | Minimal cost — 1-day log retention keeps CloudWatch costs near zero | . ",
+    "url": "/eventbridge-gate/#key-features",
+    
+    "relUrl": "/#key-features"
+  },"10": {
+    "doc": "Home",
+    "title": "Install",
+    "content": "Homebrew (macOS / Linux) . brew tap aka-somix/eventbridge-gate brew install egate . Build from source . git clone https://github.com/aka-somix/eventbridge-gate.git cd eventbridge-gate make dev-build # outputs ./egate . ",
+    "url": "/eventbridge-gate/#install",
+    
+    "relUrl": "/#install"
+  },"11": {
+    "doc": "Home",
+    "title": "Get Started in 60 Seconds",
+    "content": "# 1. (Optional) Select an AWS profile for this session egate profile set # 2. Attach a monitor to your bus egate bus monitor set my-event-bus # 3. Stream events in real-time — press q to stop egate bus monitor tail my-event-bus # 4. Clean up when done egate bus monitor unset my-event-bus . ",
+    "url": "/eventbridge-gate/#get-started-in-60-seconds",
+    
+    "relUrl": "/#get-started-in-60-seconds"
+  },"12": {
+    "doc": "Home",
+    "title": "Commands at a Glance",
+    "content": "| Command | Description | . | egate bus list | List all EventBridge buses in the account | . | egate bus monitor set &lt;bus&gt; | Attach a sniffer to a bus | . | egate bus monitor list | Show buses with active monitors | . | egate bus monitor tail &lt;bus&gt; | Stream events live (press q to stop) | . | egate bus monitor unset &lt;bus&gt; | Remove the sniffer and all its AWS resources | . | egate profile set | Interactively select an AWS CLI profile | . egate creates real AWS resources (CloudWatch Log Group + EventBridge Rule) that may incur minimal costs. See the User Manual for details on AWS permissions and cost expectations. Full User Manual Contributing . ",
+    "url": "/eventbridge-gate/#commands-at-a-glance",
+    
+    "relUrl": "/#commands-at-a-glance"
+  },"13": {
+    "doc": "Home",
+    "title": "Home",
+    "content": " ",
+    "url": "/eventbridge-gate/",
+    
+    "relUrl": "/"
+  },"14": {
+    "doc": "User Manual",
+    "title": "User Manual",
+    "content": "Contents . | Prerequisites . | AWS Credentials | Required AWS Permissions | . | Installation . | Homebrew (macOS / Linux) | Build from Source | Verify Installation | . | Profile Management | Listing Event Buses | Monitor Lifecycle . | Attaching a Monitor (set) | Listing Active Monitors | Streaming Events (tail) | Removing a Monitor (unset) | . | AWS Resources and Costs | Troubleshooting . | “AccessDenied” errors | tail shows no events | Monitor already exists | Wrong AWS account/region | . | . ",
+    "url": "/eventbridge-gate/manual.html",
+    
+    "relUrl": "/manual.html"
+  },"15": {
+    "doc": "User Manual",
+    "title": "Prerequisites",
+    "content": "AWS Credentials . egate uses the AWS SDK v2 default credential chain. It will look for credentials in this order: . | Environment variables (AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY) | AWS CLI profile (~/.aws/credentials and ~/.aws/config) | IAM role (EC2 instance profile, ECS task role, etc.) | . Run aws sts get-caller-identity to verify your credentials are working before using egate. Required AWS Permissions . Your IAM principal needs permission to: . | Action | Purpose | . | events:ListEventBuses | bus list command | . | events:PutRule | Create EventBridge rule | . | events:PutTargets | Add CloudWatch target to rule | . | events:RemoveTargets | Remove target during teardown | . | events:DeleteRule | Delete rule during teardown | . | events:ListRuleNamesByTarget | monitor list command | . | logs:CreateLogGroup | Create CloudWatch log group | . | logs:PutRetentionPolicy | Set 1-day log retention | . | logs:DeleteLogGroup | Delete log group during teardown | . | logs:DescribeLogGroups | Resolve log group ARN for Live Tail | . | logs:StartLiveTail | Stream events in real-time | . | logs:PutResourcePolicy | Allow EventBridge to write logs | . | logs:DeleteResourcePolicy | Remove log resource policy | . ",
+    "url": "/eventbridge-gate/manual.html#prerequisites",
+    
+    "relUrl": "/manual.html#prerequisites"
+  },"16": {
+    "doc": "User Manual",
+    "title": "Installation",
+    "content": "Homebrew (macOS / Linux) . brew tap aka-somix/eventbridge-gate brew install egate . Build from Source . Requires Go 1.23+. git clone https://github.com/aka-somix/eventbridge-gate.git cd eventbridge-gate make dev-build # Binary available at ./egate sudo mv ./egate /usr/local/bin/egate # optional: add to PATH . Verify Installation . egate --version . ",
+    "url": "/eventbridge-gate/manual.html#installation",
+    
+    "relUrl": "/manual.html#installation"
+  },"17": {
+    "doc": "User Manual",
+    "title": "Profile Management",
+    "content": "egate profile set provides an interactive selector for AWS CLI named profiles. Use this when working with multiple AWS accounts or roles. egate profile set . You’ll see a list of profiles from ~/.aws/credentials: . ? Select AWS Profile: ▸ default prod staging my-sandbox . Profile selection is in-memory only and does not persist across invocations. You must run egate profile set each time you open a new terminal session. ",
+    "url": "/eventbridge-gate/manual.html#profile-management",
+    
+    "relUrl": "/manual.html#profile-management"
+  },"18": {
+    "doc": "User Manual",
+    "title": "Listing Event Buses",
+    "content": "List all EventBridge event buses in the current AWS account and region: . egate bus list . Example output: . default my-application-bus orders-service-bus . ",
+    "url": "/eventbridge-gate/manual.html#listing-event-buses",
+    
+    "relUrl": "/manual.html#listing-event-buses"
+  },"19": {
+    "doc": "User Manual",
+    "title": "Monitor Lifecycle",
+    "content": "Attaching a Monitor (set) . egate bus monitor set &lt;bus-name&gt; . This creates three AWS resources: . | Resource | Name | . | CloudWatch Log Group | /eventbridge-gate/watch/&lt;bus-name&gt; | . | Log Resource Policy | allow-logging-from-eventbridge | . | EventBridge Rule | eventbridge-gate-rule (on the target bus) | . The rule uses a wildcard event pattern {\"source\": [{\"wildcard\": \"*\"}]} to capture all events regardless of source. Example: . egate bus monitor set my-application-bus . Setup takes a few seconds as the resources are created in AWS. Wait for the confirmation message before running tail. Listing Active Monitors . egate bus monitor list . Shows all buses that currently have an eventbridge-gate-rule attached. Streaming Events (tail) . egate bus monitor tail &lt;bus-name&gt; . Opens a CloudWatch Live Tail stream on the monitor’s log group. Events appear as they flow through the bus in real-time. Press q to stop streaming. Example output: . { \"version\": \"0\", \"id\": \"abc123\", \"source\": \"aws.s3\", \"detail-type\": \"Object Created\", \"account\": \"123456789012\", \"region\": \"eu-west-1\", \"detail\": { \"bucket\": { \"name\": \"my-bucket\" }, \"object\": { \"key\": \"uploads/file.csv\" } } } . Pipe the output through jq for formatted JSON: egate bus monitor tail my-bus | jq . Removing a Monitor (unset) . egate bus monitor unset &lt;bus-name&gt; . Tears down all three AWS resources created by set: . | Removes the EventBridge rule target | Deletes the EventBridge rule | Deletes the CloudWatch Log Group (and all logs within it) | . Example: . egate bus monitor unset my-application-bus . All captured logs are permanently deleted when you run unset. Export events from CloudWatch before tearing down if you need to keep them. ",
+    "url": "/eventbridge-gate/manual.html#monitor-lifecycle",
+    
+    "relUrl": "/manual.html#monitor-lifecycle"
+  },"20": {
+    "doc": "User Manual",
+    "title": "AWS Resources and Costs",
+    "content": "egate creates lightweight, short-lived resources designed to minimize cost: . | Resource | Retention | Approximate Cost | . | CloudWatch Log Group | 1 day (auto-purged) | &lt; $0.01/month per active monitor | . | EventBridge Rule | Deleted by unset | $1.00 per million events matched | . For development and debugging use cases (small event volumes, short sessions), costs are effectively $0. ",
+    "url": "/eventbridge-gate/manual.html#aws-resources-and-costs",
+    
+    "relUrl": "/manual.html#aws-resources-and-costs"
+  },"21": {
+    "doc": "User Manual",
+    "title": "Troubleshooting",
+    "content": "“AccessDenied” errors . Check that your IAM principal has all permissions listed in the Prerequisites section. Common missing permissions: logs:PutResourcePolicy and events:PutTargets. tail shows no events . | Verify the monitor is active: egate bus monitor list | Confirm events are actually being published to the bus (check the source service) | CloudWatch Live Tail may have a few seconds of latency | . Monitor already exists . If set fails because the rule already exists, run unset first to clean up, then set again. Wrong AWS account/region . Set the correct profile with egate profile set, or export environment variables: . export AWS_PROFILE=my-profile export AWS_REGION=eu-west-1 egate bus list . ",
+    "url": "/eventbridge-gate/manual.html#troubleshooting",
+    
+    "relUrl": "/manual.html#troubleshooting"
+  }
+}

@@ -1,6 +1,7 @@
 title: EventBridge Gate
 description: Real-time AWS EventBridge event debugger for developers
 theme: just-the-docs
+color_scheme: egate
 
 url: https://aka-somix.github.io
 baseurl: /eventbridge-gate
@@ -29,6 +30,13 @@ callouts:
   tip:
     title: Tip
     color: green
+
+# Apply default layout to all pages
+defaults:
+  - scope:
+      path: ""
+    values:
+      layout: default
 
 # Exclude from build
 exclude:

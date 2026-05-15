@@ -1,4 +1,5 @@
 ---
+layout: default
 title: User Manual
 nav_order: 2
 ---
